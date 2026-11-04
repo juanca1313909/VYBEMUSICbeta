@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07070b">
+  <meta name="description" content="VYBE MUSIC — tu música, tu ambiente.">
+  <title>VYBE MUSIC</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <button class="brand" onclick="switchTab('home')" aria-label="VYBE MUSIC inicio">
+        <span class="brand-mark">V</span><span>VYBE <b>MUSIC</b></span>
+      </button>
+      <div class="top-actions">
+        <button class="icon-btn" id="install-btn" aria-label="Instalar aplicación" title="Instalar" hidden>↓</button>
+        <button class="icon-btn" onclick="switchTab('ai')" aria-label="VYBE AI">✧</button>
+        <button class="icon-btn" onclick="switchTab('settings')" aria-label="Configuración">⚙</button>
+      </div>
+    </header>
+
+    <main id="main-container">
+      <section class="view active" id="view-home">
+        <div class="hero">
+          <div class="eyebrow"><span class="live-dot"></span> TU ESPACIO MUSICAL</div>
+          <h1>El sonido de<br><span>tu mundo.</span></h1>
+          <p>Tu música local. Tu ambiente. A tu manera.</p>
+          <button class="primary-btn" onclick="document.getElementById('file-selector').click()">＋ Importar música</button>
+          <input id="file-selector" type="file" accept="audio/*,.mp3,.wav,.m4a,.flac,.ogg,.aac" multiple hidden>
+        </div>
+
+        <section class="catalog-home">
+          <div class="section-heading"><div><span class="eyebrow">🇨🇴 CATÁLOGO PÚBLICO</span><h2>TOP DE COLOMBIA</h2></div><button class="small-btn" onclick="switchTab('catalog')">Ver todo ↗</button></div>
+          <p class="catalog-subtitle">Descubre canciones compartidas por VYBE MUSIC.</p>
+          <div id="catalog-home-list" class="catalog-grid"><div class="empty-state compact"><div class="empty-icon">♫</div><p>Conectando con el catálogo...</p></div></div>
+        </section>
+        <div class="section-heading">
+          <div><span class="eyebrow">TU COLECCIÓN</span><h2>Escuchado en VYBE</h2></div>
+          <span class="count-pill" id="track-count">0 pistas</span>
+        </div>
+        <div class="toolbar">
+          <label class="search-box"><span>⌕</span><input id="library-search" type="search" placeholder="Buscar canción o artista..." autocomplete="off"></label>
+          <button class="small-btn" onclick="document.getElementById('file-selector').click()">＋ Añadir</button>
+        </div>
+        <div id="tracks-list" class="track-list">
+          <div class="empty-state"><div class="empty-icon">♫</div><h3>Tu biblioteca empieza aquí</h3><p>Importa archivos de audio desde tu dispositivo. Se guardarán en esta aplicación.</p><button class="outline-btn" onclick="document.getElementById('file-selector').click()">Elegir canciones</button></div>
+        </div>
+        <div class="section-heading section-gap"><div><span class="eyebrow">DESCUBRE</span><h2>Tu espacio</h2></div></div>
+        <div class="feature-grid">
+          <button class="feature-card violet-card" onclick="switchTab('ai')"><span class="feature-symbol">✧</span><strong>VYBE AI</strong><small>Encuentra tu próximo mood</small></button>
+          <button class="feature-card" onclick="switchTab('favorites')"><span class="feature-symbol">♡</span><strong>Favoritos</strong><small>Tus pistas preferidas</small></button>
+        </div>
+      </section>
+
+      <section class="view" id="view-catalog">
+        <div class="page-intro"><span class="eyebrow">🇨🇴 MÚSICA PARA DESCUBRIR</span><h1>TOP DE <span>COLOMBIA</span></h1><p>Catálogo público de VYBE MUSIC. Las canciones publicadas estarán disponibles para todos.</p></div>
+        <label class="search-box search-large"><span>⌕</span><input id="catalog-search" type="search" placeholder="Buscar en TOP DE COLOMBIA..."></label>
+        <div class="catalog-filters"><button class="catalog-filter active" data-genre="Todos">Todos</button><button class="catalog-filter" data-genre="Urbano">Urbano</button><button class="catalog-filter" data-genre="Reggaetón">Reggaetón</button><button class="catalog-filter" data-genre="Trap">Trap</button><button class="catalog-filter" data-genre="Popular">Popular</button></div>
+        <div class="section-heading"><div><span class="eyebrow">LO MÁS ESCUCHADO</span><h2>Ranking musical</h2></div><span class="count-pill" id="catalog-count">0 canciones</span></div>
+        <div id="catalog-list" class="track-list"><div class="empty-state"><div class="empty-icon">♫</div><h3>Cargando catálogo</h3><p>Estamos buscando las canciones publicadas.</p></div></div>
+      </section>
+
+      <section class="view" id="view-search">
+        <div class="page-intro"><span class="eyebrow">ENCUENTRA TU SONIDO</span><h1>Buscar<span>.</span></h1><p>Busca entre las canciones que tienes guardadas en tu dispositivo.</p></div>
+        <label class="search-box search-large"><span>⌕</span><input id="global-search" type="search" placeholder="Canción, artista o archivo..."></label>
+        <div id="search-results" class="track-list"><div class="empty-state compact"><div class="empty-icon">⌕</div><p>Escribe algo para buscar en tu biblioteca.</p></div></div>
+      </section>
+
+      <section class="view" id="view-library">
+        <div class="page-intro"><span class="eyebrow">TODO LO QUE HAS IMPORTADO</span><h1>Biblioteca<span>.</span></h1><p>Tus archivos de audio, guardados localmente.</p></div>
+        <div class="library-actions"><button class="small-btn" onclick="document.getElementById('file-selector').click()">＋ Importar canciones</button><span class="count-pill" id="library-count">0 pistas</span></div>
+        <div id="library-list" class="track-list"></div>
+      </section>
+
+      <section class="view" id="view-ai">
+        <div class="page-intro"><span class="eyebrow">TU SELECTOR MUSICAL</span><h1>VYBE <span>AI</span></h1><p>Cuéntame qué ambiente quieres. Crearé una selección usando las canciones de tu biblioteca.</p></div>
+        <div class="ai-panel">
+          <label for="ai-prompt">¿Qué mood buscas hoy?</label>
+          <textarea id="ai-prompt" rows="3" placeholder="Ej: trap colombiano para entrenar, música tranquila para estudiar..."></textarea>
+          <div class="prompt-chips">
+            <button onclick="usePrompt('Música tranquila para estudiar y concentrarme')">◌ Focus</button>
+            <button onclick="usePrompt('Trap y música urbana con mucha energía')">ϟ Energía</button>
+            <button onclick="usePrompt('Canciones melancólicas para la noche')">☾ Nocturno</button>
+            <button onclick="usePrompt('Música alegre para levantar el ánimo')">✦ Buen mood</button>
+          </div>
+          <button class="primary-btn full-btn" id="generate-btn">Crear mi VYBE <span>↗</span></button>
+          <p class="privacy-note">La selección se genera en tu dispositivo a partir de nombres de archivos. No es una IA conectada a Internet ni analiza el audio.</p>
+        </div>
+        <div id="ai-results" class="ai-results"></div>
+      </section>
+
+      <section class="view" id="view-favorites">
+        <div class="page-intro"><span class="eyebrow">TU SELECCIÓN PERSONAL</span><h1>Favoritos<span>.</span></h1><p>Las canciones que marcaste con el corazón.</p></div>
+        <div id="favorites-list" class="track-list"></div>
+      </section>
+
+      <section class="view" id="view-party">
+        <div class="page-intro"><span class="eyebrow">MÚSICA PARA COMPARTIR</span><h1>VYBE <span>Party</span></h1><p>Prepara una sesión musical en este dispositivo.</p></div>
+        <div class="party-card"><div class="party-orb">♫</div><h2>Tu sesión, tus reglas.</h2><p>El modo Party permite crear una cola local para escuchar varias pistas seguidas. La sincronización entre teléfonos aún no está disponible.</p><button class="primary-btn full-btn" onclick="startParty()">Crear sesión local</button><div id="party-status" class="party-status">Aún no hay una sesión activa.</div></div>
+        <div class="section-heading"><div><span class="eyebrow">SIGUIENTE EN COLA</span><h2>Tu música</h2></div></div><div id="party-queue" class="track-list"></div>
+      </section>
+
+      <section class="view" id="view-profile">
+        <div class="page-intro"><span class="eyebrow">TU PERFIL EN ESTE DISPOSITIVO</span><h1>Mi perfil<span>.</span></h1><p>Un pequeño resumen de tu espacio musical.</p></div>
+        <div class="profile-card"><div class="profile-avatar">V</div><h2>Oyente VYBE</h2><p>Tu colección personal</p><div class="profile-stats"><div><strong id="profile-tracks">0</strong><small>Canciones</small></div><div><strong id="profile-favs">0</strong><small>Favoritos</small></div></div></div>
+      </section>
+
+      <section class="view" id="view-settings">
+        <div class="page-intro"><span class="eyebrow">PERSONALIZA TU EXPERIENCIA</span><h1>Ajustes<span>.</span></h1><p>VYBE MUSIC, a tu manera.</p></div>
+        <div class="settings-card">
+          <div class="setting-row"><div><strong>Biblioteca persistente</strong><small>Las canciones importadas se guardan en este dispositivo.</small></div><span class="status-tag" id="storage-status">Activa</span></div>
+          <div class="setting-row"><div><strong>Reproducción continua</strong><small>Pasar automáticamente a la siguiente pista.</small></div><label class="switch"><input type="checkbox" id="autoplay-toggle" checked><span></span></label></div>
+          <div class="setting-row"><div><strong>Repetir canción</strong><small>Volver a reproducir la pista actual.</small></div><label class="switch"><input type="checkbox" id="repeat-toggle"><span></span></label></div>
+          <div class="setting-row"><div><strong>Modo aleatorio</strong><small>Elegir la siguiente pista al azar.</small></div><label class="switch"><input type="checkbox" id="shuffle-toggle"><span></span></label></div>
+          <button class="danger-btn" id="clear-library-btn">Eliminar toda mi biblioteca</button>
+        </div>
+        <div class="about-card"><div class="about-logo">V</div><strong>VYBE MUSIC</strong><span>Versión 1.0 · OLED Edition</span><p>Tu música permanece en tu dispositivo. VYBE no incluye catálogo de streaming ni descarga canciones de Internet.</p></div>
+      </section>
+    </main>
+
+    <div class="mini-player hidden" id="mini-player">
+      <button class="mini-cover" onclick="openPlayer()">♫</button>
+      <button class="mini-meta" onclick="openPlayer()"><strong id="mini-title">Sin reproducción</strong><small id="mini-artist">Importa una canción</small></button>
+      <button class="mini-control" id="mini-play-btn" aria-label="Reproducir o pausar">▶</button>
+      <div class="mini-progress"><span id="mini-progress"></span></div>
+    </div>
+
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-tab="home" onclick="switchTab('home')"><span>⌂</span><small>Inicio</small></button>
+      <button class="nav-item" data-tab="catalog" onclick="switchTab('catalog')"><span>🇨🇴</span><small>TOP</small></button>
+      <button class="nav-item" data-tab="search" onclick="switchTab('search')"><span>⌕</span><small>Buscar</small></button>
+      <button class="nav-item" data-tab="library" onclick="switchTab('library')"><span>▤</span><small>Biblioteca</small></button>
+      <button class="nav-item" data-tab="ai" onclick="switchTab('ai')"><span>✧</span><small>VYBE AI</small></button>
+      <button class="nav-item" data-tab="party" onclick="switchTab('party')"><span>♫</span><small>Party</small></button>
+    </nav>
+  </div>
+
+  <div class="player-overlay hidden" id="player-overlay" role="dialog" aria-modal="true" aria-label="Reproductor">
+    <div class="player-top"><button class="icon-btn" onclick="closePlayer()" aria-label="Cerrar reproductor">⌄</button><span>REPRODUCIENDO DESDE TU BIBLIOTECA</span><button class="icon-btn" id="player-favorite" onclick="toggleCurrentFavorite()" aria-label="Marcar favorito">♡</button></div>
+    <div class="album-art" id="album-art"><span>V</span><i>VYBE MUSIC</i></div>
+    <div class="player-info"><div><h2 id="player-title">Sin reproducción</h2><p id="player-artist">Importa una canción</p></div><span class="quality-tag">LOCAL</span></div>
+    <input type="range" id="seek-bar" min="0" max="1000" value="0" aria-label="Progreso de canción">
+    <div class="time-row"><span id="current-time">0:00</span><span id="duration-time">0:00</span></div>
+    <div class="player-controls">
+      <button class="control-btn" id="shuffle-player-btn" title="Aleatorio">⤨</button>
+      <button class="control-btn" id="prev-btn" title="Anterior">|◀</button>
+      <button class="big-play" id="big-play-btn" aria-label="Reproducir o pausar">▶</button>
+      <button class="control-btn" id="next-btn" title="Siguiente">▶|</button>
+      <button class="control-btn" id="repeat-player-btn" title="Repetir">↻</button>
+    </div>
+    <p class="player-footnote">El audio se reproduce desde los archivos guardados en tu dispositivo.</p>
+  </div>
+
+  <audio id="audio-engine" preload="metadata"></audio>
+<div id="toast" class="toast" role="status"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabase-config.js"></script>
+<script src="./script.js"></script>
+</body>
+</html>
